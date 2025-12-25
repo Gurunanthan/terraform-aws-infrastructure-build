@@ -11,4 +11,10 @@ module "security_groups" {
   terraform_vpc_id = module.vpc.terraform_ap_northeast_3_vpc_id
 }
 
-# adding to check whether the changes reflect
+module "alb" {
+  source = "../../modules/alb"
+
+  terraform_vpc_id                = module.vpc.terraform_ap_northeast_3_vpc_id
+  terraform_public_subnet_ids     = module.vpc.terraform_ap_northeast_3_public_subnet_ids
+  terraform_alb_security_group_id = module.security_groups.terraform_alb_security_group_id
+}
