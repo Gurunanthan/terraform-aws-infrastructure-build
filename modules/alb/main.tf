@@ -1,10 +1,28 @@
 ############################################
+# Locals
+# - Ensure AWS name length limits are respected
+############################################
+locals {
+  terraform_alb_name = substr(
+    "tf-${var.terraform_project}-${var.terraform_default_environment}-alb",
+    0,
+    32
+  )
+
+  terraform_tg_name = substr(
+    "tf-${var.terraform_project}-${var.terraform_default_environment}-tg",
+    0,
+    32
+  )
+}
+
+############################################
 # Application Load Balancer
 # - Internet-facing
-# - Distributes traffic across targets
+# - Entry point for public traffic
 ############################################
 resource "aws_lb" "terraform_alb" {
-  name               = "terraform-${var.terraform_project}-${var.terraform_default_environment}-alb"
+  name               = local.terraform_alb_name
   load_balancer_type = "application"
   internal           = false
 
@@ -15,7 +33,7 @@ resource "aws_lb" "terraform_alb" {
   subnets = var.terraform_public_subnet_ids
 
   tags = {
-    Name        = "terraform-${var.terraform_project}-${var.terraform_default_environment}-alb"
+    Name        = local.terraform_alb_name
     Project     = var.terraform_project
     Environment = var.terraform_default_environment
     ManagedBy   = "Terraform"
@@ -27,13 +45,13 @@ resource "aws_lb" "terraform_alb" {
 ############################################
 # Target Group
 # - Receives traffic from ALB
-# - Instances will register here later
+# - ASG instances will register here
 ############################################
 resource "aws_lb_target_group" "terraform_tg" {
-  name     = "terraform-${var.terraform_project}-${var.terraform_default_environment}-tg"
+  name     = local.terraform_tg_name
   port     = 80
   protocol = "HTTP"
-  vpc_id  = var.terraform_vpc_id
+  vpc_id   = var.terraform_vpc_id
 
   health_check {
     path                = "/"
@@ -46,7 +64,7 @@ resource "aws_lb_target_group" "terraform_tg" {
   }
 
   tags = {
-    Name        = "terraform-${var.terraform_project}-${var.terraform_default_environment}-tg"
+    Name        = local.terraform_tg_name
     Project     = var.terraform_project
     Environment = var.terraform_default_environment
     ManagedBy   = "Terraform"
