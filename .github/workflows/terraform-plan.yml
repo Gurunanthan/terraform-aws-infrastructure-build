@@ -47,3 +47,7 @@ jobs:
       # 6. Terraform Plan
       - name: Terraform Plan
         run: terraform plan
+
+      # 6. Terraform apply
+      - name: Terraform apply
+        run: terraform apply --auto-approve # no need to ask permission
