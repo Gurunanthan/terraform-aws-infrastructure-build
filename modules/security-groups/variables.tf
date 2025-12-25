@@ -11,7 +11,7 @@ variable "terraform_vpc_id" {
 ############################################
 variable "terraform_project" {
   type    = string
-  default = "aws-infrastructure-build"
+  default = "aws-infra-build"
 }
 
 variable "terraform_default_environment" {

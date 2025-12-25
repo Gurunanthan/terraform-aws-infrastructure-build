@@ -31,7 +31,7 @@ variable "terraform_ap_northeast_3_vpc_metadata" {
   })
 
   default = {
-    project     = "aws-infrastructure-build"
+    project     = "aws-infra-build"
     environment = "dev"
     extra_tags  = {}
   }

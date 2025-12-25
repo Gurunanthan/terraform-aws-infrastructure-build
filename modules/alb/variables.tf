@@ -21,7 +21,7 @@ variable "terraform_alb_security_group_id" {
 ############################################
 variable "terraform_project" {
   type    = string
-  default = "aws-infrastructure-build"
+  default = "aws-infra-build"
 }
 
 variable "terraform_default_environment" {
